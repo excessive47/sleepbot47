@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Schlaflabor-Chatbot</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 400px; margin: 40px auto; }
+        #answer { margin-top: 20px; padding: 15px; background: #f1f1f1; border-radius: 8px; min-height: 50px; }
+        input, button { padding: 10px; font-size: 1em; }
+        button { margin-left: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Schlaflabor-Chatbot</h2>
+    <form id="sleepbot-form">
+        <input type="text" id="question" placeholder="Frage zum Schlaflabor" required style="width: 65%">
+        <button type="submit">Senden</button>
+    </form>
+    <div id="answer">Hier erscheint die Antwort.</div>
+
+    <script>
+    document.getElementById('sleepbot-form').onsubmit = async function(e) {
+        e.preventDefault();
+        const q = document.getElementById('question').value;
+        document.getElementById('answer').innerText = "Bitte warten...";
+        const res = await fetch('/chatbot', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({question: q})
+        });
+        const data = await res.json();
+        document.getElementById('answer').innerText = data.answer;
+    };
+    </script>
+</body>
+</html>
